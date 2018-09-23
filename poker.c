@@ -5,7 +5,7 @@ int winner[5],trial[5];
 
 void score_calc(int,char,int,char,int,char,int,char,int,char);
 void different_numbers(int,int,int,int,int,int[]);
-
+int consecutive(int,int,int,int,int);
 void main()
 {
   FILE *fp = fopen("input.txt", "r");
@@ -79,9 +79,46 @@ void score_calc(int card1n,char card1s,int card2n,char card2s,int card3n,
     if(x[i]==0)
       no_of_zero++;
   }
-  printf("%d\n",no_of_zero);
+  //printf("%d\n",no_of_zero);
+  int c=consecutive(card1n,card2n,card3n,card4n,card5n);
+  printf("\n%d",c);
+
 
 }
+
+int consecutive(int card1n,int card2n,int card3n,int card4n,int card5n)
+{
+  int z[5]={card1n,card2n,card3n,card4n,card5n},a,min,count=0;
+  for(int i=0;i<5;i++)
+  {
+    for(int j=i+1;j<5;j++)
+    {
+      if(z[i]>z[j])
+        {
+          a=z[i];
+          z[i]=z[j];
+          z[j]=a;
+        }
+    }
+  }
+  printf("\n");
+  for(int i=0;i<5;i++)
+  {
+    printf("%d ",z[i] );
+  }
+  count=z[0];
+  for(int i=0;i<5;i++)
+  {
+    if(count==z[i])
+      {
+        count++;
+      }
+  }
+  if(count==(z[0]+5))
+    return 1;
+  else return 0;
+}
+
 
 void different_numbers(int card1n,int card2n,int card3n,int card4n,int card5n,int x[5])
 {
