@@ -73,6 +73,8 @@ void main()
   int score[5]={0,0,0,0,0};
   score_calc(p1_number[0],p1_suit[0],p1_number[1],p1_suit[1],p1_number[2],p1_suit[2],
     p1_number[3],p1_suit[3],p1_number[4],p1_suit[4],score);
+  for(int i=0;i<5;i++)
+    printf("%d\n",score[i] );
   fclose(fp);
 }
 
