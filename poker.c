@@ -1,12 +1,22 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-int winner[5],trial[5];
 
-void score_calc(int,char,int,char,int,char,int,char,int,char);
+
+void score_calc(int,char,int,char,int,char,int,char,int,char,int[]);
 void different_numbers(int,int,int,int,int,int[]);
-int consecutive(int,int,int,int,int);
+void order(int,int,int,int,int,int[]);
 int same_suit(char,char,char,char,char);
+int check_exception(int[]);
+void royal_flush_straight_flush();
+void straight();
+void flush();
+void high_card();
+void one_pair();
+void three_of_a_kind();
+void two_pairs();
+void four_of_a_kind();
+void full_house();
 
 void main()
 {
@@ -60,16 +70,74 @@ void main()
   printf("\n" );
   //printf("%c\n",p1_suit[3]);
 //  printf("%d\n",p1_number[4]);
-  int x[5];
+  int score[5]={0,0,0,0,0};
   score_calc(p1_number[0],p1_suit[0],p1_number[1],p1_suit[1],p1_number[2],p1_suit[2],
-    p1_number[3],p1_suit[3],p1_number[4],p1_suit[4]);
+    p1_number[3],p1_suit[3],p1_number[4],p1_suit[4],score);
   fclose(fp);
 }
 
-void score_calc(int card1n,char card1s,int card2n,char card2s,int card3n,
-  char card3s,int card4n,char card4s,int card5n,char card5s)
+void royal_flush_straight_flush(int y[],int score[])
 {
-  int x[5]={0,0,0,0,0},no_of_zero=0;
+  score[0]=900+y[0];
+}
+
+void four_of_a_kind(int y[],int score[])
+{
+  if(y[0]==y[1])
+  {
+    score[0]=800+y[0];
+    score[1]=y[4];
+  }
+  else
+  {
+    score[0]=800+y[4];
+    score[1]=y[0];
+  }
+}
+
+void full_house(int y[],int score[])
+{
+  if(y[0]==y[2])
+  {
+    score[0]=700+y[0];
+    score[1]=700+y[3];
+  }
+  else
+  {
+    score[0]=700+y[2];
+    score[1]=y[0];
+  }
+}
+
+void flush(int y[],int score[])
+{
+  score[0]=600+y[0];
+  for(int i=1;i<5;i++)
+  {
+    score[i]=y[i];
+  }
+}
+
+void straight()
+{
+
+}
+
+void high_card()
+{}
+void one_pair()
+{}
+void three_of_a_kind()
+{}
+void two_pairs()
+{}
+
+
+
+void score_calc(int card1n,char card1s,int card2n,char card2s,int card3n,
+  char card3s,int card4n,char card4s,int card5n,char card5s,int score[])
+{
+  int x[5]={0,0,0,0,0},no_of_zero=0,y[5]={0,0,0,0,0},c;
   //int diff_num=
   printf("%c\n",card5s );
   different_numbers(card1n,card2n,card3n,card4n,card5n,x);
@@ -83,12 +151,95 @@ void score_calc(int card1n,char card1s,int card2n,char card2s,int card3n,
       no_of_zero++;
   }
   //printf("%d\n",no_of_zero);
-  int c=consecutive(card1n,card2n,card3n,card4n,card5n);
+  order(card1n,card2n,card3n,card4n,card5n,y);
+
+  for(int i=0;i<5;i++)
+    printf("%d ",y[i] );
+
+  int count=y[4];
+  for(int i=4;i>=0;i--)
+  {
+    if(count==y[i])
+      {
+        count++;
+      }
+  }
+  if(count==(y[4]+5))
+    c=1;
+  else c=0;
+
   printf("\n%d",c);
 
   int ss=same_suit(card1s,card2s,card3s,card4s,card5s);
   printf(" %d\n",ss );
 
+  int exception=check_exception(y);
+
+  if(no_of_zero==0)
+  {
+    if(c==1)
+    {
+      if(ss==1)
+        royal_flush_straight_flush(y,score);
+      else
+        straight(y,score);
+    }
+    else
+    {
+      if(ss=1)
+        flush(y,score);
+      else
+        high_card(y,score);
+    }
+  }
+
+  else if(no_of_zero==1)
+    one_pair(y,score);
+
+  else if(no_of_zero==2)
+  {
+    int flag=0;
+    for(int i=0;i<5;i++)
+    {
+      if(x[i]==3)
+        flag=1;
+    }
+    if(flag==1)
+      three_of_a_kind(y,score);
+    else
+      two_pairs(y,score);
+  }
+
+  else if(no_of_zero==3)
+  {
+    int flag=0;
+    for(int i=0;i<5;i++)
+    {
+      if(x[i]==4)
+        flag=1;
+    }
+    if(flag==1)
+      four_of_a_kind(y,score);
+    else
+      full_house(y,score);
+  }
+
+
+}
+
+int check_exception(int y[])
+{
+  int count=y[4];
+  for(int i=4;i>0;i--)
+  {
+    if(count==y[i])
+      {
+        count++;
+      }
+  }
+  if(count==(y[4]+4)&&y[0]==14)
+    return 1;
+  else return 0;
 }
 
 int same_suit(char card1s,char card2s,char card3s,char card4s,char card5s)
@@ -105,14 +256,14 @@ int same_suit(char card1s,char card2s,char card3s,char card4s,char card5s)
    return 0;
 }
 
-int consecutive(int card1n,int card2n,int card3n,int card4n,int card5n)
+void order(int card1n,int card2n,int card3n,int card4n,int card5n,int y[5])
 {
   int z[5]={card1n,card2n,card3n,card4n,card5n},a,min,count=0;
   for(int i=0;i<5;i++)
   {
     for(int j=i+1;j<5;j++)
     {
-      if(z[i]>z[j])
+      if(z[i]<z[j])
         {
           a=z[i];
           z[i]=z[j];
@@ -123,19 +274,9 @@ int consecutive(int card1n,int card2n,int card3n,int card4n,int card5n)
   printf("\n");
   for(int i=0;i<5;i++)
   {
-    printf("%d ",z[i] );
+    y[i]=z[i];
   }
-  count=z[0];
-  for(int i=0;i<5;i++)
-  {
-    if(count==z[i])
-      {
-        count++;
-      }
-  }
-  if(count==(z[0]+5))
-    return 1;
-  else return 0;
+
 }
 
 
@@ -152,7 +293,6 @@ void different_numbers(int card1n,int card2n,int card3n,int card4n,int card5n,in
     {
       if(y[i]==dummy[j])
         {
-          printf("yes\n");
           check[j]++;
           flag=1;
         }

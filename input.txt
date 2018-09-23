@@ -1,4 +1,4 @@
-7D 6H 8S QS 3D 6D 5H 8H 4D 2S 7D
-3S 3H 2H 7D 5D TH 7C 4S 9D 4C 6S
+7D 7S 8S QS 3D 6D 9H 6S 7H
+3S 3H 2H 7D 5D TH 7C 4S 9D
 
 https://github.com/mihir-madhani/cs220-project
