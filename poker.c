@@ -66,10 +66,21 @@ void main()
 void score_calc(int card1n,char card1s,int card2n,char card2s,int card3n,
   char card3s,int card4n,char card4s,int card5n,char card5s)
 {
-  int x[5]={0,0,0,0,0};
+  int x[5]={0,0,0,0,0},no_of_zero=0;
   //int diff_num=
   printf("%c\n",card5s );
   different_numbers(card1n,card2n,card3n,card4n,card5n,x);
+  for(int i=0;i<5;i++)
+  {
+    printf("%d ",x[i] );
+  }
+  for(int i=0;i<5;i++)
+  {
+    if(x[i]==0)
+      no_of_zero++;
+  }
+  printf("%d\n",no_of_zero);
+
 }
 
 void different_numbers(int card1n,int card2n,int card3n,int card4n,int card5n,int x[5])
@@ -99,6 +110,6 @@ void different_numbers(int card1n,int card2n,int card3n,int card4n,int card5n,in
   }
   for(int i=0;i<5;i++)
   {
-    printf("\n%d",check[i]);
+    x[i]=check[i];
   }
 }
