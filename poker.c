@@ -3,7 +3,7 @@
 #include<string.h>
 
 
-void score_calc(int,char,int,char,int,char,int,char,int,char,int[]);
+void score_calc(int[],int[],int[],char[]);
 void different_numbers(int,int,int,int,int,int[]);
 void order(int,int,int,int,int,int[]);
 int same_suit(char,char,char,char,char);
@@ -22,8 +22,8 @@ void main()
 {
   FILE *fp = fopen("input.txt", "r");
   char buff[255];
-  int p1_number[5],p2_number[5],p3_number[5];
-  char p1_suit[5],p2_suit[5],p3_suit[5];
+  int p1_number[7],p2_number[7],p3_number[7];
+  char p1_suit[7],p2_suit[7],p3_suit[7];
 
   //while
   (fgets(buff,255,(FILE*)fp));
@@ -31,8 +31,8 @@ void main()
 
 
   //}
-  int buffer[26];
-  for(int i=0;i<26;i++)
+  int buffer[32];
+  for(int i=0;i<32;i++)
   {
     if(buff[i]=='2')buffer[i]=2;
     else if(buff[i]=='3')buffer[i]=3;
@@ -62,21 +62,60 @@ void main()
 
   p1_number[4]=buffer[24];p1_suit[4]=buff[25];p2_number[4]=buffer[24];
   p2_suit[4]=buff[25];p3_number[4]=buffer[24];p3_suit[4]=buff[25];
-  for(int i=0;i<26;i++)
+
+  p1_number[5]=buffer[27];p1_suit[5]=buff[28];p2_number[5]=buffer[27];
+  p2_suit[5]=buff[28];p3_number[5]=buffer[27];p3_suit[5]=buff[28];
+
+  p1_number[6]=buffer[30];p1_suit[6]=buff[31];p2_number[6]=buffer[30];
+  p2_suit[6]=buff[31];p3_number[6]=buffer[30];p3_suit[6]=buff[31];
+
+  for(int i=0;i<32;i++)
     printf("%d ",buffer[i]);
   printf("\n" );
-  for(int i=0;i<26;i++)
+  for(int i=0;i<32;i++)
       printf("%c ",buff[i]);
   printf("\n" );
   //printf("%c\n",p1_suit[3]);
 //  printf("%d\n",p1_number[4]);
   int score[5]={0,0,0,0,0};
-  score_calc(p1_number[0],p1_suit[0],p1_number[1],p1_suit[1],p1_number[2],p1_suit[2],
-    p1_number[3],p1_suit[3],p1_number[4],p1_suit[4],score);
+  int winner[6]={0,0,0,0,0,0};
+  int better[5]={0,0,0,0,0};
+  int temp[21][5],count=0,counter;
+
+  for(int i=0;i<7;i++)
+  {
+    for(int j=i+1;j<7;j++)
+    {
+      counter=0;
+      for(int k=0;k<7;k++)
+      {
+        if((k!=i)&&(k!=j))
+        {
+          temp[count][counter]=k;
+          counter++;
+        }
+      }
+      count++;
+    }
+  }
+  for(int i=0;i<21;i++)
+  {
+    for(int j=0;j<5;j++)
+      {
+        score_calc(temp[i],score,p1_number,p1_suit);
+        for(int i=0;i<5;i++)
+          printf("\n%d ",score[i] );
+
+      }
+    printf("\n" );
+  }
+  score_calc(temp[20],score,p1_number,p1_suit);
   for(int i=0;i<5;i++)
-    printf("%d\n",score[i] );
+    printf("\n%d ",score[i] );
   fclose(fp);
 }
+
+
 
 void royal_flush_straight_flush(int y[],int score[])
 {
@@ -221,12 +260,22 @@ void high_card(int y[],int score[])
 
 
 
-void score_calc(int card1n,char card1s,int card2n,char card2s,int card3n,
-  char card3s,int card4n,char card4s,int card5n,char card5s,int score[])
+void score_calc(int temp[],int score[],int p1_number[],char p1_suit[])
 {
   int x[5]={0,0,0,0,0},no_of_zero=0,y[5]={0,0,0,0,0},c;
   //int diff_num=
-  printf("%c\n",card5s );
+
+  int card1n=p1_number[temp[0]];
+  int card2n=p1_number[temp[1]];
+  int card3n=p1_number[temp[2]];
+  int card4n=p1_number[temp[3]];
+  int card5n=p1_number[temp[4]];
+
+  char card1s=p1_suit[temp[0]];
+  char card2s=p1_suit[temp[1]];
+  char card3s=p1_suit[temp[2]];
+  char card4s=p1_suit[temp[3]];
+  char card5s=p1_suit[temp[4]];
   different_numbers(card1n,card2n,card3n,card4n,card5n,x);
   for(int i=0;i<5;i++)
   {
