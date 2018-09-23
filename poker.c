@@ -1,5 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
+int winner[5],trial[5];
+
+void score_calc(char,char,char,char,char,char,char,char,char,char);
 
 void main()
 {
@@ -26,5 +29,14 @@ void main()
     p2_suit[4]=buff[25];p3_number[4]=buff[24];p3_suit[4]=buff[25];
   //}
   printf("%c\n",p1_number[4]);
+  int x[5];
+  score_calc(p1_number[0],p1_suit[0],p1_number[1],p1_suit[1],p1_number[2],p1_suit[2],
+    p1_number[3],p1_suit[3],p1_number[4],p1_suit[4]);
   fclose(fp);
+}
+
+void score_calc(char p1_number,char p1_suit,char p2_number,char p2_suit,
+  char p3_number,char p3_suit,char p4_number,char p4_suit,char p5_number,char p6_suit)
+{
+  ;
 }
