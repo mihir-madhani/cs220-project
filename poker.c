@@ -118,19 +118,104 @@ void flush(int y[],int score[])
   }
 }
 
-void straight()
+void straight(int y[],int score[])
 {
-
+  score[0]=500+y[0];
 }
 
-void high_card()
-{}
-void one_pair()
-{}
-void three_of_a_kind()
-{}
-void two_pairs()
-{}
+void three_of_a_kind(int y[],int score[])
+{
+  if(y[0]==y[2])
+  {
+    score[0]=400+y[0];
+    score[1]=y[3];
+    score[2]=y[4];
+  }
+  else if(y[1]==y[3])
+  {
+    score[0]=400+y[1];
+    score[1]=y[0];
+    score[2]=y[4];
+  }
+  else
+  {
+    score[0]=400+y[2];
+    score[1]=y[0];
+    score[2]=y[1];
+  }
+}
+
+void two_pairs(int y[],int score[])
+{
+  if(y[0]==y[1])
+  {
+    score[0]=300+y[0];
+
+    if(y[2]==y[3])
+    {
+      score[1]=y[2];
+      score[2]=y[4];
+    }
+    else
+    {
+      score[1]=y[3];
+      score[2]=y[2];
+    }
+  }
+  else
+  {
+    score[0]=300+y[1];
+    score[1]=y[0];
+    score[2]=y[3];
+  }
+}
+
+void one_pair(int y[],int score[])
+{
+  if(y[0]==y[1])
+  {
+    score[0]=200+y[0];
+    score[1]=y[2];
+    score[2]=y[3];
+    score[3]=y[4];
+  }
+  else
+  {
+    score[1]=y[0];
+    if(y[1]==y[2])
+    {
+      score[0]=200+y[1];
+      score[2]=y[3];
+      score[3]=y[4];
+    }
+    else
+    {
+      score[2]=y[1];
+      if(y[2]==y[3])
+      {
+        score[0]=200+y[2];
+        score[3]=y[4];
+      }
+      else
+      {
+        score[0]=200+y[3];
+        score[3]=y[2];
+      }
+    }
+  }
+}
+
+void high_card(int y[],int score[])
+{
+  score[0]=100+y[0];
+  for(int i=1;i<5;i++)
+  {
+    score[i]=y[i];
+  }
+}
+
+
+
 
 
 
@@ -174,6 +259,7 @@ void score_calc(int card1n,char card1s,int card2n,char card2s,int card3n,
   printf(" %d\n",ss );
 
   int exception=check_exception(y);
+  printf("%d\n",exception );
 
   if(no_of_zero==0)
   {
@@ -183,6 +269,14 @@ void score_calc(int card1n,char card1s,int card2n,char card2s,int card3n,
         royal_flush_straight_flush(y,score);
       else
         straight(y,score);
+    }
+    else if(exception==1&&ss==0)
+    {
+      for(int i=0;i<5;i++)
+      {
+        y[i]=5-i;
+      }
+      straight(y,score);
     }
     else
     {
