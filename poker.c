@@ -6,6 +6,8 @@ int winner[5],trial[5];
 void score_calc(int,char,int,char,int,char,int,char,int,char);
 void different_numbers(int,int,int,int,int,int[]);
 int consecutive(int,int,int,int,int);
+int same_suit(char,char,char,char,char);
+
 void main()
 {
   FILE *fp = fopen("input.txt", "r");
@@ -56,6 +58,7 @@ void main()
   for(int i=0;i<26;i++)
       printf("%c ",buff[i]);
   printf("\n" );
+  //printf("%c\n",p1_suit[3]);
 //  printf("%d\n",p1_number[4]);
   int x[5];
   score_calc(p1_number[0],p1_suit[0],p1_number[1],p1_suit[1],p1_number[2],p1_suit[2],
@@ -83,7 +86,23 @@ void score_calc(int card1n,char card1s,int card2n,char card2s,int card3n,
   int c=consecutive(card1n,card2n,card3n,card4n,card5n);
   printf("\n%d",c);
 
+  int ss=same_suit(card1s,card2s,card3s,card4s,card5s);
+  printf(" %d\n",ss );
 
+}
+
+int same_suit(char card1s,char card2s,char card3s,char card4s,char card5s)
+{
+  int count=0;
+  char r[5]={card1s,card2s,card3s,card4s,card5s};
+  char repeat=card1s;
+  for(int i=0;i<5;i++)
+    if(r[i]==repeat)
+      count++;
+  if(count==5)
+    return 1;
+  else
+   return 0;
 }
 
 int consecutive(int card1n,int card2n,int card3n,int card4n,int card5n)
