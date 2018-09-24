@@ -8,6 +8,8 @@ void different_numbers(int,int,int,int,int,int[]);
 void order(int,int,int,int,int,int[]);
 int same_suit(char,char,char,char,char);
 int check_exception(int[]);
+void battle(int[],int[]);
+
 void royal_flush_straight_flush();
 void straight();
 void flush();
@@ -42,7 +44,7 @@ void main()
     else if(buff[i]=='7')buffer[i]=7;
     else if(buff[i]=='8')buffer[i]=8;
     else if(buff[i]=='9')buffer[i]=9;
-    else if(buff[i]=='1')buffer[i]=10;
+    else if(buff[i]=='T')buffer[i]=10;
     else if(buff[i]=='J')buffer[i]=11;
     else if(buff[i]=='Q')buffer[i]=12;
     else if(buff[i]=='K')buffer[i]=13;
@@ -77,7 +79,7 @@ void main()
   printf("\n" );
   //printf("%c\n",p1_suit[3]);
 //  printf("%d\n",p1_number[4]);
-  int score[5]={0,0,0,0,0};
+
   int winner[6]={0,0,0,0,0,0};
   int better[5]={0,0,0,0,0};
   int temp[21][5],count=0,counter;
@@ -98,24 +100,39 @@ void main()
       count++;
     }
   }
+
+
+
   for(int i=0;i<21;i++)
   {
-    for(int j=0;j<5;j++)
-      {
+        int score[5]={0,0,0,0,0};
         score_calc(temp[i],score,p1_number,p1_suit);
         for(int i=0;i<5;i++)
-          printf("\n%d ",score[i] );
+          printf("%d ",score[i] );
+        printf("\n");
+        battle(better,score);
 
-      }
     printf("\n" );
   }
-  score_calc(temp[20],score,p1_number,p1_suit);
   for(int i=0;i<5;i++)
-    printf("\n%d ",score[i] );
+    printf("%d ",better[i]);
   fclose(fp);
 }
 
-
+void battle(int better[],int score[])
+{
+  for(int i=0;i<5;i++)
+  {
+    if(score[i]>better[i])
+    {
+      for(int j=0;j<5;j++)
+        better[j]=score[j];
+      break;
+    }
+    else if(score[i]<better[i])
+      break;
+  }
+}
 
 void royal_flush_straight_flush(int y[],int score[])
 {
@@ -206,8 +223,8 @@ void two_pairs(int y[],int score[])
   else
   {
     score[0]=300+y[1];
-    score[1]=y[0];
-    score[2]=y[3];
+    score[1]=y[3];
+    score[2]=y[0];
   }
 }
 
@@ -265,6 +282,10 @@ void score_calc(int temp[],int score[],int p1_number[],char p1_suit[])
   int x[5]={0,0,0,0,0},no_of_zero=0,y[5]={0,0,0,0,0},c;
   //int diff_num=
 
+  for(int i=0;i<5;i++)
+    printf("%d ",p1_number[temp[i]] );
+  printf("\n" );
+
   int card1n=p1_number[temp[0]];
   int card2n=p1_number[temp[1]];
   int card3n=p1_number[temp[2]];
@@ -292,6 +313,7 @@ void score_calc(int temp[],int score[],int p1_number[],char p1_suit[])
   for(int i=0;i<5;i++)
     printf("%d ",y[i] );
 
+    printf("\n" );
   int count=y[4];
   for(int i=4;i>=0;i--)
   {
@@ -304,13 +326,13 @@ void score_calc(int temp[],int score[],int p1_number[],char p1_suit[])
     c=1;
   else c=0;
 
-  printf("\n%d",c);
+  //printf("\n%d",c);
 
   int ss=same_suit(card1s,card2s,card3s,card4s,card5s);
-  printf(" %d\n",ss );
+//  printf(" %d\n",ss );
 
   int exception=check_exception(y);
-  printf("%d\n",exception );
+  //printf("%d\n",exception );
 
   if(no_of_zero==0)
   {
@@ -331,7 +353,7 @@ void score_calc(int temp[],int score[],int p1_number[],char p1_suit[])
     }
     else
     {
-      if(ss=1)
+      if(ss==1)
         flush(y,score);
       else
         high_card(y,score);
@@ -428,8 +450,8 @@ void order(int card1n,int card2n,int card3n,int card4n,int card5n,int y[5])
 void different_numbers(int card1n,int card2n,int card3n,int card4n,int card5n,int x[5])
 {
   int y[5]={card1n,card2n,card3n,card4n,card5n};
-  for(int i=0;i<5;i++)
-    printf("%d\n",y[i] );
+  //for(int i=0;i<5;i++)
+    //printf("%d\n",y[i] );
   int check[5]={0,0,0,0,0},dummy[5]={0,0,0,0,0},count=0;
   for(int i=0;i<5;i++)
   {
