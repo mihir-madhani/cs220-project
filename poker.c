@@ -1,14 +1,14 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-
+int winner=0;
 
 void score_calc(int[],int[],int[],char[]);
 void different_numbers(int,int,int,int,int,int[]);
 void order(int,int,int,int,int,int[]);
 int same_suit(char,char,char,char,char);
 int check_exception(int[]);
-void battle(int[],int[]);
+void battle(int[],int[],int);
 
 void royal_flush_straight_flush();
 void straight();
@@ -24,15 +24,12 @@ void main()
 {
   FILE *fp = fopen("input.txt", "r");
   char buff[255];
-  int p1_number[7],p2_number[7],p3_number[7];
-  char p1_suit[7],p2_suit[7],p3_suit[7];
-
-  //while
-  (fgets(buff,255,(FILE*)fp));
-  //{
 
 
-  //}
+  while(fgets(buff,255,(FILE*)fp))
+{
+  int n[3][7];
+  char c[3][7];
   int buffer[32];
   for(int i=0;i<32;i++)
   {
@@ -52,36 +49,47 @@ void main()
     else buffer[i]=0;
   }
 
-  p1_number[0]=buffer[0];p1_suit[0]=buff[1];p1_number[1]=buffer[3];p1_suit[1]=buff[4];
-  p2_number[0]=buffer[6];p2_suit[0]=buff[7];p2_number[1]=buffer[9];p2_suit[1]=buff[10];
-  p3_number[0]=buffer[12];p3_suit[0]=buff[13];p3_number[1]=buffer[15];p3_suit[1]=buff[16];
+  n[0][0]=buffer[0];c[0][0]=buff[1];n[0][1]=buffer[3];c[0][1]=buff[4];
+  n[1][0]=buffer[6];c[1][0]=buff[7];n[1][1]=buffer[9];c[1][1]=buff[10];
+  n[2][0]=buffer[12];c[2][0]=buff[13];n[2][1]=buffer[15];c[2][1]=buff[16];
 
-  p1_number[2]=buffer[18];p1_suit[2]=buff[19];p2_number[2]=buffer[18];
-  p2_suit[2]=buff[19];p3_number[2]=buffer[18];p3_suit[2]=buff[19];
+  for(int i=0;i<3;i++)
+  {
+    n[i][2]=buffer[18];
+    c[i][2]=buff[19];
+  }
+  for(int i=0;i<3;i++)
+  {
+    n[i][3]=buffer[21];
+    c[i][3]=buff[22];
+  }
+  for(int i=0;i<3;i++)
+  {
+    n[i][4]=buffer[24];
+    c[i][4]=buff[25];
+  }
+  for(int i=0;i<3;i++)
+  {
+    n[i][5]=buffer[27];
+    c[i][5]=buff[28];
+  }
+  for(int i=0;i<3;i++)
+  {
+    n[i][6]=buffer[30];
+    c[i][6]=buff[31];
+  }
 
-  p1_number[3]=buffer[21];p1_suit[3]=buff[22];p2_number[3]=buffer[21];
-  p2_suit[3]=buff[22];p3_number[3]=buffer[21];p3_suit[3]=buff[22];
-
-  p1_number[4]=buffer[24];p1_suit[4]=buff[25];p2_number[4]=buffer[24];
-  p2_suit[4]=buff[25];p3_number[4]=buffer[24];p3_suit[4]=buff[25];
-
-  p1_number[5]=buffer[27];p1_suit[5]=buff[28];p2_number[5]=buffer[27];
-  p2_suit[5]=buff[28];p3_number[5]=buffer[27];p3_suit[5]=buff[28];
-
-  p1_number[6]=buffer[30];p1_suit[6]=buff[31];p2_number[6]=buffer[30];
-  p2_suit[6]=buff[31];p3_number[6]=buffer[30];p3_suit[6]=buff[31];
-
-  for(int i=0;i<32;i++)
-    printf("%d ",buffer[i]);
-  printf("\n" );
-  for(int i=0;i<32;i++)
-      printf("%c ",buff[i]);
-  printf("\n" );
+  //for(int i=0;i<32;i++)
+    //printf("%d ",buffer[i]);
+  //printf("\n" );
+  //for(int i=0;i<32;i++)
+    //  printf("%c ",buff[i]);
+  //printf("\n" );
   //printf("%c\n",p1_suit[3]);
 //  printf("%d\n",p1_number[4]);
 
-  int winner[6]={0,0,0,0,0,0};
-  int better[5]={0,0,0,0,0};
+  int winner=0;
+  int better[6]={0,0,0,0,0,0};
   int temp[21][5],count=0,counter;
 
   for(int i=0;i<7;i++)
@@ -102,31 +110,42 @@ void main()
   }
 
 
-
-  for(int i=0;i<21;i++)
+for(int j=0;j<3;j++)
   {
+    for(int i=0;i<21;i++)
+      {
         int score[5]={0,0,0,0,0};
-        score_calc(temp[i],score,p1_number,p1_suit);
-        for(int i=0;i<5;i++)
-          printf("%d ",score[i] );
-        printf("\n");
-        battle(better,score);
+        score_calc(temp[i],score,n[j],c[j]);
+      //for(int i=0;i<5;i++)
+          //printf("%d ",score[i] );
+        //printf("\n");
+        battle(better,score,j);
 
-    printf("\n" );
+        //printf("\n" );
+      }
+      printf("\n");
   }
   for(int i=0;i<5;i++)
     printf("%d ",better[i]);
+
+  printf("\nplayer %d wins\n",better[5]+1);
+}
   fclose(fp);
 }
 
-void battle(int better[],int score[])
+
+void battle(int better[],int score[],int player)
 {
   for(int i=0;i<5;i++)
   {
     if(score[i]>better[i])
     {
+      better[5]=player;
       for(int j=0;j<5;j++)
-        better[j]=score[j];
+        {
+          better[5]=player;
+          better[j]=score[j];
+        }
       break;
     }
     else if(score[i]<better[i])
@@ -282,9 +301,9 @@ void score_calc(int temp[],int score[],int p1_number[],char p1_suit[])
   int x[5]={0,0,0,0,0},no_of_zero=0,y[5]={0,0,0,0,0},c;
   //int diff_num=
 
-  for(int i=0;i<5;i++)
-    printf("%d ",p1_number[temp[i]] );
-  printf("\n" );
+  //for(int i=0;i<5;i++)
+    //printf("%d ",p1_number[temp[i]] );
+  //printf("\n" );
 
   int card1n=p1_number[temp[0]];
   int card2n=p1_number[temp[1]];
@@ -300,7 +319,7 @@ void score_calc(int temp[],int score[],int p1_number[],char p1_suit[])
   different_numbers(card1n,card2n,card3n,card4n,card5n,x);
   for(int i=0;i<5;i++)
   {
-    printf("%d ",x[i] );
+  //  printf("%d ",x[i] );
   }
   for(int i=0;i<5;i++)
   {
@@ -310,10 +329,10 @@ void score_calc(int temp[],int score[],int p1_number[],char p1_suit[])
   //printf("%d\n",no_of_zero);
   order(card1n,card2n,card3n,card4n,card5n,y);
 
-  for(int i=0;i<5;i++)
-    printf("%d ",y[i] );
+  //for(int i=0;i<5;i++)
+  //  printf("%d ",y[i] );
 
-    printf("\n" );
+  //  printf("\n" );
   int count=y[4];
   for(int i=4;i>=0;i--)
   {
@@ -438,7 +457,7 @@ void order(int card1n,int card2n,int card3n,int card4n,int card5n,int y[5])
         }
     }
   }
-  printf("\n");
+  //printf("\n");
   for(int i=0;i<5;i++)
   {
     y[i]=z[i];
